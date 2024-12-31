@@ -1,0 +1,14 @@
+{
+  "private": true,
+  "type": "module",
+  "name": "@todo/server",
+  "scripts": {
+    "dev": "tsx --watch index.ts"
+  },
+  "dependencies": {
+    "@renkei/node": "^0.1.0",
+    "@types/node": "^22.10.2",
+    "exhaustive": "^1.1.2",
+    "tsx": "^4.19.2"
+  }
+}

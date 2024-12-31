@@ -1,0 +1,8 @@
+{
+  "private": true,
+  "type": "module",
+  "name": "@todo/domain",
+  "dependencies": {
+    "@types/node": "^22.10.2"
+  }
+}

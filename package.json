@@ -1,0 +1,11 @@
+{
+  "private": true,
+  "workspaces": [
+    "application",
+    "domain",
+    "infrastructure/adapters",
+    "infrastructure/server",
+    "infrastructure/core",
+    "infrastructure/client"
+  ]
+}
