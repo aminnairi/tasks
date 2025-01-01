@@ -14,6 +14,8 @@ export class TaskEntity implements Entity {
     public readonly updatedAt: Date,
     public readonly creatorIdentifier: string,
     public readonly assigneeIdentifier: string | null,
+    public readonly projectIdentifier: string,
+    public readonly categoryIdentifier: string
   ) { }
 
   public static from(
