@@ -1,50 +1,33 @@
-import { useEffect, useState } from "react"
-import { CancelError } from "@renkei/core";
-import { client } from "./renkei";
-import { exhaustive } from "exhaustive";
-import { TasksResponse } from "@todo/application/responses/TasksResponse"
+import Container from "@mui/material/Container";
+import Box from "@mui/material/Box";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import { Route, Routes } from "react-router";
+import { HomePage } from "./pages/HomePage";
+import { TasksCreatePage } from "./pages/TasksCreatePage";
+import { LoginPage } from "./pages/LoginPage";
+import { ProfilePage } from "./pages/ProfilePage";
 
 function App() {
-  const [tasks, setTasks] = useState<TasksResponse>([]);
-
-  useEffect(() => {
-    client.listTasks({ input: null }).then(response => {
-      if (response instanceof Error) {
-        if (response instanceof CancelError) {
-          return;
-        }
-
-        return;
-      }
-
-      if (response.success) {
-        setTasks(response.tasks);
-        return;
-      }
-
-      return exhaustive(response.error, {
-        STREAM_ERROR: () => {
-          return;
-        },
-        UNEXPECTED_ERROR: () => {
-          return;
-        }
-      });
-    })
-  }, []);
-
   return (
-    <table>
-      <tbody>
-        {tasks.length === 0 ? (
-          <p>No tasks available.</p>
-        ) : tasks.map(task => (
-          <tr key={task.identifier}>
-            <td>{task.description}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <Container>
+      <AppBar>
+        <Toolbar>
+          <Typography variant="h4">
+            Tasks
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <Box paddingTop="100px">
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/tasks/create" element={<TasksCreatePage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+        </Routes>
+      </Box>
+    </Container>
   );
 }
 
