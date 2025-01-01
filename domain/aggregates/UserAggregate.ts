@@ -45,22 +45,18 @@ export class UserAggregate implements Aggregate<UserEvent> {
     return new UserAggregate(users);
   }
 
-  public register(newUser: UserEntity) {
-    const alreadyRegisteredUser = this.users.find(user => {
-      return user.identifier === newUser.identifier;
+  public findUserByUsername(username: string) {
+    const user = this.users.find(user => {
+      return user.username === username;
     });
 
-    if (alreadyRegisteredUser) {
-      return new UserAlreadyExistsError;
+    if (!user) {
+      return new UserNotFoundError
     }
 
-    return new UserCreatedEvent({
-      createdAt: newUser.createdAt,
-      email: newUser.email,
-      firstname: newUser.firstname,
-      identifier: newUser.identifier,
-      lastname: newUser.lastname,
-      updatedAt: newUser.updatedAt
+    return user;
+  }
+
     });
   }
 }
