@@ -5,13 +5,11 @@ import { UnexpectedError } from "../../domain/errors/UnexpectedError";
 import { TaskCreatedEvent } from "../../domain/events/tasks/TaskCreatedEvent";
 import { EventRepository } from "../repositories/EventRepository";
 import { EventParserService } from "../services/EventParserService";
-import { TaskView } from "../views/TaskView";
 
 export class CreateTaskUsecase {
   public constructor(
     private readonly eventRepository: EventRepository,
     private readonly eventParserService: EventParserService,
-    private readonly taskView: TaskView,
   ) { }
 
   public async execute(
@@ -111,8 +109,6 @@ export class CreateTaskUsecase {
       if (result instanceof Error) {
         return result;
       }
-
-      await this.taskView.apply(taskCreatedEvent);
 
       return null;
     } catch (error) {
