@@ -1,6 +1,7 @@
 import { Entity } from "./Entity";
 import { UserEvent } from "../events/users/UserEvent"
 import { UserNotFoundError } from "../errors/UserNotFoundError";
+import { UserUpdatedEventData } from "../events/users/UserUpdatedEvent";
 
 export class UserEntity implements Entity {
   private constructor(
@@ -46,6 +47,12 @@ export class UserEntity implements Entity {
             event.data.updatedAt,
             event.data.administrator,
           )
+        case "USER_UPDATED":
+          if (previousUser === null) {
+            return previousUser;
+          }
+
+          return previousUser.update(event.data);
       }
     }, null as null | UserEntity);
 
@@ -54,5 +61,16 @@ export class UserEntity implements Entity {
     }
 
     return user;
+  }
+
+  public update(properties: UserUpdatedEventData) {
+    return UserEntity.from(
+      properties.identifier,
+      properties.username ?? this.username,
+      properties.password ?? this.password,
+      properties.createdAt ?? this.createdAt,
+      properties.updatedAt ?? this.updatedAt,
+      properties.administrator ?? this.administrator
+    )
   }
 }
