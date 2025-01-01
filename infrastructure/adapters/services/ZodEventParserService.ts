@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z, ZodSchema } from "zod";
 import { EventParserService } from "@todo/application/services/EventParserService";
 import { TaskEvent } from "@todo/domain/events/tasks/TaskEvent";
 import { UserEvent } from "@todo/domain/events/users/UserEvent";
@@ -13,13 +13,13 @@ export class ZodEventParserService implements EventParserService {
       date: z.date({ coerce: true }),
       data: z.object({
         identifier: z.string(),
-        email: z.string(),
-        firstname: z.string(),
-        lastname: z.string(),
+        username: z.string(),
+        password: z.string(),
         createdAt: z.date({ coerce: true }),
         updatedAt: z.date(),
+        administrator: z.boolean(),
       })
-    }));
+    })) satisfies ZodSchema<Array<UserEvent>>;
 
     const validation = userEventsSchema.safeParse(events);
 
