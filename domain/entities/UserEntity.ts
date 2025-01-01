@@ -21,6 +21,9 @@ export class UserEntity implements Entity {
     updatedAt: Date,
     administrator: boolean,
   ) {
+    // TODO: username object value
+    // TODO: password object value
+
     return new UserEntity(
       identifier,
       username,
@@ -43,6 +46,7 @@ export class UserEntity implements Entity {
             event.data.updatedAt,
             event.data.administrator,
           )
+
         case "USER_UPDATED":
           if (previousUser === null) {
             return previousUser;
