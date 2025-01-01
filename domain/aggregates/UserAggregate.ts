@@ -2,6 +2,7 @@ import { UserEntity } from "../entities/UserEntity";
 import { UserEvent } from "../events/users/UserEvent";
 import { Aggregate } from "./Aggregate";
 import { UserAlreadyExistsError } from "../errors/UserAlreadyExistsError";
+import { UserUpdatedEvent } from "../events/users/UserUpdatedEvent";
 import { UserCreatedEvent } from "../events/users/UserCreatedEvent";
 
 export class UserAggregate implements Aggregate<UserEvent> {
@@ -30,6 +31,14 @@ export class UserAggregate implements Aggregate<UserEvent> {
             ...users,
             user
           ];
+        case "USER_UPDATED":
+          return users.map(user => {
+            if (user.identifier !== event.data.identifier) {
+              return user;
+            }
+
+            return user.update(event.data);
+          });
       }
     }, initialUsers);
 
