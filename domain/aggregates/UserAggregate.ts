@@ -19,11 +19,11 @@ export class UserAggregate implements Aggregate<UserEvent> {
         case "USER_CREATED":
           const user = UserEntity.from(
             event.data.identifier,
-            event.data.email,
-            event.data.firstname,
-            event.data.lastname,
+            event.data.username,
+            event.data.password,
             event.data.createdAt,
-            event.data.updatedAt
+            event.data.updatedAt,
+            event.data.administrator,
           );
 
           return [
