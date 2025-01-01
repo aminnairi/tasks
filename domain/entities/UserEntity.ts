@@ -33,10 +33,6 @@ export class UserEntity implements Entity {
 
   public static fromEvents(events: UserEvent[]) {
     const user = events.reduce((previousUser, event) => {
-      if (!previousUser) {
-        return previousUser;
-      }
-
       switch (event.type) {
         case "USER_CREATED":
           return UserEntity.from(
