@@ -9,11 +9,13 @@ export class MemoryEventRepository implements EventRepository {
   public constructor(private readonly streams: Record<string, unknown[]> = {}) { }
 
   public async fetchFromStream(wantedStreamName: string): Promise<FetchFromStreamError | unknown[]> {
-    return Object.entries(this.streams).filter(([streamName]) => {
+    const filteredStreams = Object.entries(this.streams).filter(([streamName]) => {
       return streamName.startsWith(wantedStreamName);
     }).flatMap(([, events]) => {
       return events;
     });
+
+    return filteredStreams;
   }
 
   public async saveToStream(streamName: string, event: EventShape<unknown, unknown, unknown>): Promise<null | SaveToStreamFailedError> {
