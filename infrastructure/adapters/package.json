@@ -3,9 +3,11 @@
   "type": "module",
   "name": "@todo/adapters",
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "@types/node": "^22.10.2"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "zod": "^3.24.1"
   }
 }
