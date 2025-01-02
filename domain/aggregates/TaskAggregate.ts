@@ -58,7 +58,7 @@ export class TaskAggregate implements Aggregate<TaskEvent> {
     return new TaskAggregate(tasks);
   }
 
-  public addTask(
+  public createTask(
     description: string,
     doneAt: Date | null,
     dueAt: Date | null,
