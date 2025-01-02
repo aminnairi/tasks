@@ -8,6 +8,7 @@ import { eventParserService } from "./services/eventParserService";
 import { passwordService } from "./services/passwordService";
 import { settings } from "./settings";
 import { exhaustive } from "exhaustive";
+import { createProjectImplementation } from "./implementations/createProjectImplementation";
 
 const main = async () => {
   const initializeAdministratorUsecase = new InitializeAdministratorUsecase(
@@ -46,7 +47,8 @@ const main = async () => {
     }),
     implementations: {
       listTasks: listTasksImplementation,
-      login: loginImplementation
+      login: loginImplementation,
+      createProject: createProjectImplementation
     }
   });
 
