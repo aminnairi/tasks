@@ -51,6 +51,7 @@ export class UserEntity implements Entity<UserEvent> {
   }
 
   public static fromEvents(events: UserEvent[]) {
+    // TODO: starts with a not found user error instead
     const initialUser = new ApplyError([]) as UserEntity | ApplyError<UsernameTooShortError | PasswordTooShortError | PasswordDoesNotIncludeNumberError | PasswordDoesNotIncludeLowercaseLetterError | PasswordDoesNotIncludeUppercaseLetterError | PasswordDoesNotIncludeSymbolError>;
 
     const user = events.reduce((previousUser, event) => {
