@@ -55,9 +55,11 @@ export class ZodEventParserService implements EventParserService {
         assigneeIdentifier: z.union([
           z.string(),
           z.null()
-        ])
+        ]),
+        projectIdentifier: z.string(),
+        categoryIdentifier: z.string()
       })
-    }));
+    })) satisfies ZodSchema<Array<TaskEvent>>;
 
     const validation = taskEventsSchema.safeParse(events);
 
