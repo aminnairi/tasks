@@ -2,7 +2,6 @@ import { ProjectEntity } from "@todo/domain/entities/ProjectEntity";
 import { TaskAggregate } from "../../domain/aggregates/TaskAggregate";
 import { UserEntity } from "../../domain/entities/UserEntity";
 import { UnexpectedError } from "../../domain/errors/UnexpectedError";
-import { TaskCreatedEvent } from "../../domain/events/tasks/TaskCreatedEvent";
 import { EventRepository } from "../repositories/EventRepository";
 import { EventParserService } from "../services/EventParserService";
 import { CategoryEntity } from "@todo/domain/entities/CategoryEntity";
@@ -119,6 +118,7 @@ export class CreateTaskUsecase {
         return category;
       }
 
+      const taskCreatedEvent = taskAggregate.createTask(
         description,
         doneAt,
         dueAt,
@@ -128,28 +128,11 @@ export class CreateTaskUsecase {
         category
       );
 
-      if (task instanceof Error) {
-        return task;
+      if (taskCreatedEvent instanceof Error) {
+        return taskCreatedEvent;
       }
 
-      const taskCreatedEvent: TaskCreatedEvent = {
-        date: new Date(),
-        identifier: randomUUID(),
-        type: "TASK_CREATED",
-        version: 1,
-        data: {
-          assigneeIdentifier: assignee && assignee.identifier,
-          createdAt: task.createdAt,
-          creatorIdentifier: creator.identifier,
-          description: task.description.value,
-          doneAt: task.doneAt,
-          dueAt: task.dueAt,
-          identifier: task.identifier,
-          updatedAt: task.updatedAt
-        }
-      }
-
-      const result = await this.eventRepository.saveToStream(`task-${task.identifier}`, taskCreatedEvent);
+      const result = await this.eventRepository.saveToStream(`task-${taskCreatedEvent.identifier}`, taskCreatedEvent);
 
       if (result instanceof Error) {
         return result;
