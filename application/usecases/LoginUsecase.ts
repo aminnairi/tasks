@@ -45,7 +45,7 @@ export class LoginUsecase {
         return user;
       }
 
-      const passwordValid = await this.passwordService.verifyPassword(password, user.password);
+      const passwordValid = await this.passwordService.verifyPassword(password, user.password.value);
 
       if (!passwordValid) {
         return new UserNotFoundError;
