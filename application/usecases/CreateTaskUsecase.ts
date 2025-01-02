@@ -5,16 +5,18 @@ import { UnexpectedError } from "../../domain/errors/UnexpectedError";
 import { TaskCreatedEvent } from "../../domain/events/tasks/TaskCreatedEvent";
 import { EventRepository } from "../repositories/EventRepository";
 import { EventParserService } from "../services/EventParserService";
+import { AuthenticationService } from "../services/AuthenticationService";
 
 export class CreateTaskUsecase {
   public constructor(
     private readonly eventRepository: EventRepository,
     private readonly eventParserService: EventParserService,
+    private readonly authenticationService: AuthenticationService,
   ) { }
 
   public async execute(
+    authenticationToken: string,
     description: string,
-    createdByIdentifier: string,
     assignedToIdentifier: string | null,
     projectIdentifier: string,
     doneAt: Date | null,
@@ -25,6 +27,7 @@ export class CreateTaskUsecase {
     try {
       await eventLock.lock();
 
+      const creatorIdentifier = await this.authenticationService.verifyAuthenticationToken(authenticationToken);
       const unparsedTaskEvents = await this.eventRepository.fetchFromStream("task-");
 
       if (unparsedTaskEvents instanceof Error) {
