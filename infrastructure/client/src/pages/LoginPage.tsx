@@ -54,7 +54,10 @@ export const LoginPage = () => {
             setError("Database corrupted, please inform your administrator");
           },
           UNEXPECTED_ERROR: () => {
-            setError("Database corrupted, please inform your administrator");
+            setError("An unexpected error occurred, please try again later");
+          },
+          CORRUPTED_DATABASE: () => {
+            setError("Database corrupted, please try again or contact an administrator");
           }
         });
 
