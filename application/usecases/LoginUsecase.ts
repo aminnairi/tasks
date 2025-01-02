@@ -35,6 +35,10 @@ export class LoginUsecase {
 
       const userAggregate = UserAggregate.from(userEvents);
 
+      if (userAggregate instanceof Error) {
+        return userAggregate;
+      }
+
       const user = userAggregate.findUserByUsername(username);
 
       if (user instanceof Error) {
