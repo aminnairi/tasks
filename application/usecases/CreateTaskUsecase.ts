@@ -16,6 +16,7 @@ export class CreateTaskUsecase {
     description: string,
     createdByIdentifier: string,
     assignedToIdentifier: string | null,
+    projectIdentifier: string,
     doneAt: Date | null,
     dueAt: Date | null
   ) {
