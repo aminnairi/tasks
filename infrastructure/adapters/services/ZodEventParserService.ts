@@ -51,8 +51,8 @@ export class ZodEventParserService implements EventParserService {
         ]),
         createdAt: z.date({ coerce: true }),
         updatedAt: z.date({ coerce: true }),
-        createdBy: z.string(),
         assignedTo: z.union([
+        creatorIdentifier: z.string(),
           z.string(),
           z.null()
         ])
