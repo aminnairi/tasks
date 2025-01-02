@@ -5,6 +5,7 @@ import { UnexpectedError } from "../../domain/errors/UnexpectedError";
 import { TaskCreatedEvent } from "../../domain/events/tasks/TaskCreatedEvent";
 import { EventRepository } from "../repositories/EventRepository";
 import { EventParserService } from "../services/EventParserService";
+import { CategoryEntity } from "@todo/domain/entities/CategoryEntity";
 import { AuthenticationService } from "../services/AuthenticationService";
 
 export class CreateTaskUsecase {
