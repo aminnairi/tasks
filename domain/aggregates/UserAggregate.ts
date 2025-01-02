@@ -49,7 +49,7 @@ export class UserAggregate implements Aggregate<UserEvent> {
 
   public findUserByUsername(username: string) {
     const user = this.users.find(user => {
-      return user.username === username;
+      return user.username.isValue(username);
     });
 
     if (!user) {
