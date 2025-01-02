@@ -10,6 +10,7 @@ export interface TaskCreatedEventData {
   creatorIdentifier: string,
   assigneeIdentifier: string | null,
   projectIdentifier: string,
+  categoryIdentifier: string,
 }
 
 export interface TaskCreatedEvent extends EventShape<"TASK_CREATED", 1, TaskCreatedEventData> { }
