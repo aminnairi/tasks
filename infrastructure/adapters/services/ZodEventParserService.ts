@@ -4,6 +4,7 @@ import { TaskEvent } from "@todo/domain/events/tasks/TaskEvent";
 import { UserEvent } from "@todo/domain/events/users/UserEvent";
 import { ParseError } from "@todo/domain/errors/ParseError";
 import { ProjectEvent } from "@todo/domain/events/projects/ProjectEvent";
+import { CategoryEvent } from "@todo/domain/events/categories/CategoryEvent";
 
 export class ZodEventParserService implements EventParserService {
   public parseUserEvents(events: unknown[]): ParseError | UserEvent[] {
@@ -91,4 +92,20 @@ export class ZodEventParserService implements EventParserService {
     return new ParseError(String(validation.error));
   }
 
+  public parseCategoryEvents(events: unknown[]): ParseError | CategoryEvent[] {
+    const schema = z.array(z.object({
+      identifier: z.string(),
+      date: z.date({ coerce: true }),
+      type: z.literal("CATEGORY_CREATED"),
+      version: z.literal(1),
+      data: z.object({
+        identifier: z.string(),
+        name: z.string(),
+        color: z.string(),
+        projectIdentifier: z.string(),
+      }),
+    })) satisfies ZodSchema<Array<CategoryEvent>>;
+
+    return schema.parse(events);
+  }
 }
