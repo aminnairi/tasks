@@ -5,6 +5,13 @@ import { UserNotFoundError } from "../errors/UserNotFoundError";
 import { UserUpdatedEvent } from "../events/users/UserUpdatedEvent";
 import { randomUUID } from "crypto";
 import { UserCreatedEvent } from "../events/users/UserCreatedEvent";
+import { UsernameTooShortError } from "../errors/UsernameTooShortError";
+import { PasswordTooShortError } from "../errors/PasswordTooShortError";
+import { PasswordDoesNotIncludeLowercaseLetterError } from "../errors/PasswordDoesNotIncludeLowercaseLetterError";
+import { PasswordDoesNotIncludeUppercaseLetterError } from "../errors/PasswordDoesNotIncludeUppercaseLetterError";
+import { ApplyError } from "../errors/ApplyError";
+import { PasswordDoesNotIncludeNumberError } from "../errors/PasswordDoesNotIncludeNumberError";
+import { PasswordDoesNotIncludeSymbolError } from "../errors/PasswordDoesNotIncludeSymbolError";
 
 export class UserAggregate implements Aggregate<UserEvent> {
   private constructor(private readonly users: UserEntity[] = []) { }
@@ -14,12 +21,16 @@ export class UserAggregate implements Aggregate<UserEvent> {
   }
 
   public apply(events: UserEvent[]) {
-    const initialUsers: UserEntity[] = [];
+    const initialUsers = [] as UserEntity[] | ApplyError<UsernameTooShortError | PasswordTooShortError | PasswordDoesNotIncludeLowercaseLetterError | PasswordDoesNotIncludeUppercaseLetterError | PasswordDoesNotIncludeNumberError | PasswordDoesNotIncludeSymbolError>;
 
-    const users = events.reduce((users, event) => {
+    const users = events.reduce((previousUsers, event) => {
+      if (previousUsers instanceof Error) {
+        return previousUsers;
+      }
+
       switch (event.type) {
         case "USER_CREATED":
-          const user = UserEntity.from(
+          const newUser = UserEntity.from(
             event.data.identifier,
             event.data.username,
             event.data.password,
@@ -28,21 +39,42 @@ export class UserAggregate implements Aggregate<UserEvent> {
             event.data.administrator,
           );
 
+          if (newUser instanceof Error) {
+            // TODO: apply previous errors as well
+            return new ApplyError([newUser]);
+          }
+
           return [
-            ...users,
-            user
+            ...previousUsers,
+            newUser
           ];
 
         case "USER_UPDATED":
-          return users.map(user => {
-            if (user.identifier !== event.data.identifier) {
-              return user;
-            }
-
-            return user.update(event.data);
+          const foundUser = previousUsers.find(user => {
+            return user.identifier === event.data.identifier;
           });
+
+          if (!foundUser) {
+            return previousUsers;
+          }
+
+          const updatedUser = foundUser.apply(event);
+
+          if (updatedUser instanceof Error) {
+            // TODO: apply previous errors as well
+            return new ApplyError([updatedUser]);
+          }
+
+          return [
+            ...previousUsers,
+            updatedUser
+          ]
       }
     }, initialUsers);
+
+    if (users instanceof Error) {
+      return users;
+    }
 
     return new UserAggregate(users);
   }
@@ -100,6 +132,10 @@ export class UserAggregate implements Aggregate<UserEvent> {
       updatedAt,
       administrator
     );
+
+    if (user instanceof Error) {
+      return user;
+    }
 
     const userCreatedEvent: UserCreatedEvent = {
       date: new Date(),
