@@ -7,8 +7,8 @@ export interface TaskCreatedEventData {
   dueAt: Date | null,
   createdAt: Date,
   updatedAt: Date,
-  assignedTo: string | null
   creatorIdentifier: string,
+  assigneeIdentifier: string | null,
 }
 
 export interface TaskCreatedEvent extends EventShape<"TASK_CREATED", 1, TaskCreatedEventData> { }
