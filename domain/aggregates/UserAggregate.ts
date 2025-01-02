@@ -110,9 +110,9 @@ export class UserAggregate implements Aggregate<UserEvent> {
         administrator: user.administrator,
         createdAt: user.createdAt,
         identifier: user.identifier,
-        password: user.password,
+        password: user.password.value,
         updatedAt: user.updatedAt,
-        username: user.username
+        username: user.username.value
       },
     };
 
