@@ -105,7 +105,6 @@ export class CreateTaskUsecase {
       const maybeAssignee = UserEntity.fromEvents(assigneeEvents);
       const assignee = maybeAssignee instanceof Error ? null : maybeAssignee;
 
-      const task = taskAggregate.addTask(
       const project = ProjectEntity.fromEvents(projectEvents);
 
       if (project instanceof Error) {
