@@ -44,6 +44,12 @@ export const loginImplementation = implementLoginRoute(async ({ username, passwo
           success: false,
           error: "BAD_CREDENTIALS"
         } as const;
+      },
+      ApplyError: () => {
+        return {
+          success: false,
+          error: "CORRUPTED_DATABASE"
+        } as const;
       }
     });
   }
