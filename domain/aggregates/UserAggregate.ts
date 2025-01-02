@@ -53,7 +53,7 @@ export class UserAggregate implements Aggregate<UserEvent> {
     });
 
     if (!user) {
-      return new UserNotFoundError
+      return new UserNotFoundError()
     }
 
     return user;
