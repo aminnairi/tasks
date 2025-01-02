@@ -9,6 +9,7 @@ export interface TaskCreatedEventData {
   updatedAt: Date,
   creatorIdentifier: string,
   assigneeIdentifier: string | null,
+  projectIdentifier: string,
 }
 
 export interface TaskCreatedEvent extends EventShape<"TASK_CREATED", 1, TaskCreatedEventData> { }
