@@ -61,7 +61,7 @@ export class UserAggregate implements Aggregate<UserEvent> {
 
   public createOrUpdateAdministrator(username: string, password: string) {
     const alreadyExistingUser = this.users.find(user => {
-      return user.username === username;
+      return user.username.isValue(username);
     });
 
     if (alreadyExistingUser) {
