@@ -19,6 +19,7 @@ export class CreateTaskUsecase {
     description: string,
     assignedToIdentifier: string | null,
     projectIdentifier: string,
+    categoryIdentifier: string,
     doneAt: Date | null,
     dueAt: Date | null
   ) {
@@ -46,6 +47,12 @@ export class CreateTaskUsecase {
         return unparsedAssigneeEvents;
       }
 
+      const unparsedCategoryEvents = await this.eventRepository.fetchFromStream(`category-${categoryIdentifier}`);
+
+      if (unparsedCategoryEvents instanceof Error) {
+        return unparsedCategoryEvents;
+      }
+
       const taskEvents = this.eventParserService.parseTaskEvents(unparsedTaskEvents);
 
       if (taskEvents instanceof Error) {
@@ -64,6 +71,12 @@ export class CreateTaskUsecase {
         return assigneeEvents;
       }
 
+      const categoryEvents = this.eventParserService.parseCategoryEvents(unparsedCategoryEvents);
+
+      if (categoryEvents instanceof Error) {
+        return categoryEvents;
+      }
+
       const taskAggregate = TaskAggregate.from(taskEvents);
 
       if (taskAggregate instanceof Error) {
@@ -80,11 +93,18 @@ export class CreateTaskUsecase {
       const assignee = maybeAssignee instanceof Error ? null : maybeAssignee;
 
       const task = taskAggregate.addTask(
+      const category = CategoryEntity.fromEvents(categoryEvents);
+
+      if (category instanceof Error) {
+        return category;
+      }
+
         description,
         doneAt,
         dueAt,
         creator,
         assignee
+        category
       );
 
       if (task instanceof Error) {
