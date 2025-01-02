@@ -28,6 +28,10 @@ export const [loginRoute, implementLoginRoute] = createHttpRoute({
         success: z.literal(false),
         error: z.literal("BAD_CREDENTIALS")
       })
+      z.object({
+        success: z.literal(false),
+        error: z.literal("CORRUPTED_DATABASE"),
+      }),
     ]);
 
     return schema.parse(value);
