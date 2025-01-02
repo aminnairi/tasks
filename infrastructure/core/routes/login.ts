@@ -14,20 +14,20 @@ export const [loginRoute, implementLoginRoute] = createHttpRoute({
     const schema = z.union([
       z.object({
         success: z.literal(true),
-        authenticationToken: z.string()
+        authenticationToken: z.string(),
       }),
       z.object({
         success: z.literal(false),
-        error: z.literal("UNEXPECTED_ERROR")
+        error: z.literal("UNEXPECTED_ERROR"),
       }),
       z.object({
         success: z.literal(false),
-        error: z.literal("STREAM_ERROR")
+        error: z.literal("STREAM_ERROR"),
       }),
       z.object({
         success: z.literal(false),
-        error: z.literal("BAD_CREDENTIALS")
-      })
+        error: z.literal("BAD_CREDENTIALS"),
+      }),
       z.object({
         success: z.literal(false),
         error: z.literal("CORRUPTED_DATABASE"),
