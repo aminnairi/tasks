@@ -1,4 +1,3 @@
-import { randomUUID } from "crypto";
 import { ProjectEntity } from "@todo/domain/entities/ProjectEntity";
 import { TaskAggregate } from "../../domain/aggregates/TaskAggregate";
 import { UserEntity } from "../../domain/entities/UserEntity";
@@ -31,6 +30,7 @@ export class CreateTaskUsecase {
       await eventLock.lock();
 
       const creatorIdentifier = await this.authenticationService.verifyAuthenticationToken(authenticationToken);
+
       const unparsedTaskEvents = await this.eventRepository.fetchFromStream("task-");
 
       if (unparsedTaskEvents instanceof Error) {
