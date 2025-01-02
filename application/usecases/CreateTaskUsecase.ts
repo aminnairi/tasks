@@ -34,7 +34,7 @@ export class CreateTaskUsecase {
         return unparsedTaskEvents;
       }
 
-      const unparsedCreatorEvents = await this.eventRepository.fetchFromStream(`user-${createdByIdentifier}`);
+      const unparsedCreatorEvents = await this.eventRepository.fetchFromStream(`user-${creatorIdentifier}`);
 
       if (unparsedCreatorEvents instanceof Error) {
         return unparsedCreatorEvents;
