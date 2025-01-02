@@ -7,6 +7,7 @@ import { randomUUID } from "crypto";
 import { UserEntity } from "../entities/UserEntity";
 import { TaskWithSimilarDescriptionError } from "../errors/TaskWithSimilarDescriptionError"
 import { ProjectEntity } from "../entities/ProjectEntity";
+import { CategoryEntity } from "../entities/CategoryEntity";
 
 export class TaskAggregate implements Aggregate<TaskEvent> {
   private constructor(private readonly tasks: TaskEntity[]) { }
@@ -26,9 +27,10 @@ export class TaskAggregate implements Aggregate<TaskEvent> {
         event.data.dueAt,
         event.data.createdAt,
         event.data.updatedAt,
-        event.data.createdBy,
-        event.data.assignedTo
+        event.data.creatorIdentifier,
+        event.data.assigneeIdentifier,
         event.data.projectIdentifier,
+        event.data.categoryIdentifier
       );
 
       if (task instanceof Error) {
@@ -63,6 +65,7 @@ export class TaskAggregate implements Aggregate<TaskEvent> {
     creator: UserEntity,
     assignee: UserEntity | null,
     project: ProjectEntity,
+    category: CategoryEntity
   ) {
     const identifier = randomUUID() as string;
     const createdAt = new Date();
@@ -76,7 +79,7 @@ export class TaskAggregate implements Aggregate<TaskEvent> {
       return new TaskWithSimilarDescriptionError
     }
 
-    const task = TaskEntity.from(
+    return TaskEntity.create(
       identifier,
       description,
       doneAt,
@@ -86,9 +89,8 @@ export class TaskAggregate implements Aggregate<TaskEvent> {
       creator.identifier,
       assignee && assignee.identifier,
       project.identifier,
+      category.identifier,
     );
-
-    return task;
   }
 
   public listTasks() {
