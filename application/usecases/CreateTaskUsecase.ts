@@ -96,7 +96,7 @@ export class CreateTaskUsecase {
         data: {
           assigneeIdentifier: assignee && assignee.identifier,
           createdAt: task.createdAt,
-          createdBy: creator.identifier,
+          creatorIdentifier: creator.identifier,
           description: task.description.value,
           doneAt: task.doneAt,
           dueAt: task.dueAt,
