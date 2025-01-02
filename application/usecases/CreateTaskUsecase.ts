@@ -1,4 +1,5 @@
 import { randomUUID } from "crypto";
+import { ProjectEntity } from "@todo/domain/entities/ProjectEntity";
 import { TaskAggregate } from "../../domain/aggregates/TaskAggregate";
 import { UserEntity } from "../../domain/entities/UserEntity";
 import { UnexpectedError } from "../../domain/errors/UnexpectedError";
@@ -48,6 +49,12 @@ export class CreateTaskUsecase {
         return unparsedAssigneeEvents;
       }
 
+      const unparsedProjectEvents = await this.eventRepository.fetchFromStream(`project-${projectIdentifier}`);
+
+      if (unparsedProjectEvents instanceof Error) {
+        return unparsedProjectEvents;
+      }
+
       const unparsedCategoryEvents = await this.eventRepository.fetchFromStream(`category-${categoryIdentifier}`);
 
       if (unparsedCategoryEvents instanceof Error) {
@@ -72,6 +79,12 @@ export class CreateTaskUsecase {
         return assigneeEvents;
       }
 
+      const projectEvents = this.eventParserService.parseProjectEvents(unparsedProjectEvents);
+
+      if (projectEvents instanceof Error) {
+        return projectEvents;
+      }
+
       const categoryEvents = this.eventParserService.parseCategoryEvents(unparsedCategoryEvents);
 
       if (categoryEvents instanceof Error) {
@@ -94,6 +107,12 @@ export class CreateTaskUsecase {
       const assignee = maybeAssignee instanceof Error ? null : maybeAssignee;
 
       const task = taskAggregate.addTask(
+      const project = ProjectEntity.fromEvents(projectEvents);
+
+      if (project instanceof Error) {
+        return project;
+      }
+
       const category = CategoryEntity.fromEvents(categoryEvents);
 
       if (category instanceof Error) {
@@ -104,7 +123,8 @@ export class CreateTaskUsecase {
         doneAt,
         dueAt,
         creator,
-        assignee
+        assignee,
+        project,
         category
       );
 
