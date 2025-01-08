@@ -14,6 +14,7 @@ import { Notification } from "./components/Notification";
 import { ProjectDetailsPage } from "./pages/ProjectDetailsPage";
 import { WithAuthentication } from "./components/WithAuthentication";
 import { AccountPage } from "./pages/AccountPage";
+import { WithoutAuthentication } from "./components/WithoutAuthentication";
 
 function App() {
   return (
@@ -24,7 +25,6 @@ function App() {
       <Box paddingTop="100px">
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={<LoginPage />} />
           <Route element={<WithAuthentication />}>
             <Route path="/tasks/create" element={<TasksCreatePage />} />
             <Route path="/profile" element={<ProfilePage />} />
@@ -32,6 +32,9 @@ function App() {
             <Route path="/projects/create" element={<ProjectsCreatePage />} />
             <Route path="/projects/:project" element={<ProjectDetailsPage />} />
             <Route path="/account" element={<AccountPage />} />
+          </Route>
+          <Route element={<WithoutAuthentication />}>
+            <Route path="/login" element={<LoginPage />} />
           </Route>
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
