@@ -76,7 +76,7 @@ export const ProjectsCreatePage = () => {
       console.error(error);
       setError(`Unexpected error: ${error}`);
     });
-  }, [name, authenticationToken]);
+  }, [authenticationToken, name, openNotification]);
 
   return (
     <Stack spacing={3}>
