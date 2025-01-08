@@ -56,6 +56,7 @@ export const loginImplementation = implementLoginRoute(async ({ username, passwo
 
   return {
     success: true,
-    authenticationToken: result
+    authenticationToken: result.authenticationToken,
+    administrator: result.administrator,
   } as const;
 });
