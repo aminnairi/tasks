@@ -26,6 +26,7 @@ function App() {
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/projects" element={<ProjectsPage />} />
           <Route path="/projects/create" element={<ProjectsCreatePage />} />
+          <Route path="/projects/create" element={<ProjectsCreatePage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Box>
