@@ -10,6 +10,7 @@ import { settings } from "./settings";
 import { exhaustive } from "exhaustive";
 import { createProjectImplementation } from "./implementations/createProjectImplementation";
 import { listProjectsImplementation } from "./implementations/listProjectsImplementation";
+import { getProjectDetailsRouteImplementation } from "./implementations/getProjectDetailsRouteImplementation";
 
 const main = async () => {
   const initializeAdministratorUsecase = new InitializeAdministratorUsecase(
@@ -74,7 +75,8 @@ const main = async () => {
       listTasks: listTasksImplementation,
       login: loginImplementation,
       createProject: createProjectImplementation,
-      listProjects: listProjectsImplementation
+      listProjects: listProjectsImplementation,
+      getProjectDetails: getProjectDetailsRouteImplementation,
     }
   });
 
