@@ -9,10 +9,12 @@ import { ProjectsCreatePage } from "./pages/ProjectsCreatePage";
 import { ProjectsPage } from "./pages/ProjectsPage";
 import { Sidebar } from "./components/Sidebar";
 import { Header } from "./components/Header";
+import { Notification } from "./components/Notification";
 
 function App() {
   return (
     <Container>
+      <Notification />
       <Sidebar />
       <Header />
       <Box paddingTop="100px">
