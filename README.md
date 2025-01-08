@@ -32,11 +32,15 @@ npm i
 
 ### Server Startup
 
+Start the server at [`localhost:8000`](http://localhost:8000).
+
 ```bash
 npm -w @todo/server run dev
 ```
 
 ### Client Startup
+
+Start the client at [`localhost:5173`](http://localhost:5173).
 
 ```bash
 npm -w @todo/client run dev
