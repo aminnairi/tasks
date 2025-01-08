@@ -1,6 +1,7 @@
 # tasks
 
 ## Requirements
+Self-hosted Open-Source Task Manager
 
 - Node
 - NPM
