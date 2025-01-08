@@ -57,6 +57,28 @@ services:
 
 ## Development
 
+### Technologies used
+
+#### TypeScript
+
+TypeScript is used as the programming language choosen for writing both the client & server source-code.
+
+#### React.js
+
+React.js is a library that helps writing Web application faster than using directly the Web APIs such as the DOM Web API. This is the library that has been choosen for the client Web application. The client has been generated using Vite.js as the bundler of choice.
+
+#### Renkei
+
+Renkei is a library that aims at reducing the friction between the client and the server by sharing common types. It also helps when refactoring code and changing the specification for the shape of a request or response, aiming at creating a HTTP server that is safe to use on the client.
+
+#### Clean Architecture
+
+This project has been architectured using the Clean Architecture principles, aiming at creating a safe environment by separating the business logic from the technical implementation details, helping migrate from one framework or library to another without friction.
+
+#### Event Sourcing
+
+The storage of data has been architectured around the idea of Event Sourcing, providing a safe data storage strategy and some other goodies such as auditability and data security.
+
 ### Requirements
 
 - [Node](https://nodejs.org)
