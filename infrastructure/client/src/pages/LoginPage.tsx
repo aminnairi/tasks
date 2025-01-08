@@ -9,6 +9,7 @@ import { exhaustive } from "exhaustive";
 import { authenticationTokenSignal } from "../signals/authenticationTokenSignal";
 import { useNavigate } from "react-router";
 import { useNotification } from "../hooks/notification";
+import { isAdministratorSignal } from "../signals/isAdministratorSignal";
 
 export const LoginPage = () => {
   const [username, setUsername] = useState("");
@@ -65,6 +66,7 @@ export const LoginPage = () => {
       }
 
       authenticationTokenSignal.emit(response.authenticationToken);
+      isAdministratorSignal.emit(response.administrator);
 
       openNotification({
         duration: 5000,
