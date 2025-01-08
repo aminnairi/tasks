@@ -5,6 +5,7 @@ import { TasksResponse } from "../responses/TasksResponse";
 import { AuthenticationService } from "../services/AuthenticationService";
 import { EventParserService } from "../services/EventParserService";
 import { UserEntity } from "@todo/domain/entities/UserEntity";
+import { UnexpectedError } from "@todo/domain/errors/UnexpectedError";
 
 export class ListTasksUsecase {
   public constructor(
@@ -14,57 +15,67 @@ export class ListTasksUsecase {
   ) { }
 
   public async execute(authenticationToken: string) {
-    const userIdentifier = await this.authenticationService.verifyAuthenticationToken(authenticationToken);
+    const eventLock = this.eventRepository.createEventLock();
 
-    if (!userIdentifier) {
-      return new UnauthorizedError();
-    }
+    try {
+      await eventLock.lock();
 
-    const unparsedUserEvents = await this.eventRepository.fetchFromStream(`user-${userIdentifier}`);
+      const userIdentifier = await this.authenticationService.verifyAuthenticationToken(authenticationToken);
 
-    if (unparsedUserEvents instanceof Error) {
-      return unparsedUserEvents;
-    }
-
-    const userEvents = this.eventParserService.parseUserEvents(unparsedUserEvents);
-
-    if (userEvents instanceof Error) {
-      return userEvents;
-    }
-
-    const user = UserEntity.fromEvents(userEvents);
-
-    if (user instanceof Error) {
-      return user;
-    }
-
-    const unparsedTaskEvents = await this.eventRepository.fetchFromStream("task-");
-
-    if (unparsedTaskEvents instanceof Error) {
-      return unparsedTaskEvents;
-    }
-
-    const taskEvents = this.eventParserService.parseTaskEvents(unparsedTaskEvents);
-
-    if (taskEvents instanceof Error) {
-      return taskEvents;
-    }
-
-    const taskAggregate = TaskAggregate.from(taskEvents);
-
-    if (taskAggregate instanceof Error) {
-      return taskAggregate;
-    }
-
-    const tasks = taskAggregate.listTasks();
-
-    const response: TasksResponse = tasks.map(task => {
-      return {
-        ...task,
-        description: task.description.value
+      if (!userIdentifier) {
+        return new UnauthorizedError();
       }
-    });
 
-    return response;
+      const unparsedUserEvents = await this.eventRepository.fetchFromStream(`user-${userIdentifier}`);
+
+      if (unparsedUserEvents instanceof Error) {
+        return unparsedUserEvents;
+      }
+
+      const userEvents = this.eventParserService.parseUserEvents(unparsedUserEvents);
+
+      if (userEvents instanceof Error) {
+        return userEvents;
+      }
+
+      const user = UserEntity.fromEvents(userEvents);
+
+      if (user instanceof Error) {
+        return user;
+      }
+
+      const unparsedTaskEvents = await this.eventRepository.fetchFromStream("task-");
+
+      if (unparsedTaskEvents instanceof Error) {
+        return unparsedTaskEvents;
+      }
+
+      const taskEvents = this.eventParserService.parseTaskEvents(unparsedTaskEvents);
+
+      if (taskEvents instanceof Error) {
+        return taskEvents;
+      }
+
+      const taskAggregate = TaskAggregate.from(taskEvents);
+
+      if (taskAggregate instanceof Error) {
+        return taskAggregate;
+      }
+
+      const tasks = taskAggregate.listTasks();
+
+      const response: TasksResponse = tasks.map(task => {
+        return {
+          ...task,
+          description: task.description.value
+        }
+      });
+
+      return response;
+    } catch (error) {
+      return new UnexpectedError(error instanceof Error ? error.message : String(error));
+    } finally {
+      eventLock.unlock();
+    }
   }
 }
