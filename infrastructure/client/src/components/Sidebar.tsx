@@ -33,6 +33,13 @@ export const Sidebar = () => {
     closeSidebar();
   }, [closeSidebar, navigate]);
 
+  const logout = useCallback(() => {
+    authenticationTokenSignal.emit("");
+    isAdministratorSignal.emit(false);
+    closeSidebar();
+    navigate("/login");
+  }, [closeSidebar, navigate]);
+
   return (
     <Drawer open={sidebarOpened} onClose={closeSidebar}>
       <List sx={{ width: "300px" }}>
@@ -90,6 +97,23 @@ export const Sidebar = () => {
                   <PersonIcon />
                 </ListItemIcon>
                 <ListItemText primary="Users" />
+              </ListItemButton>
+            </ListItem>
+          </>
+        )}
+        {authenticated && (
+          <>
+            <Divider>
+              <Typography sx={{ color: "grey" }}>
+                Authentication
+              </Typography>
+            </Divider>
+            <ListItem disablePadding disableGutters onClick={logout}>
+              <ListItemButton>
+                <ListItemIcon>
+                  <PersonIcon />
+                </ListItemIcon>
+                <ListItemText primary="Logout" />
               </ListItemButton>
             </ListItem>
           </>
