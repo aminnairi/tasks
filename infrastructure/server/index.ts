@@ -9,6 +9,7 @@ import { passwordService } from "./services/passwordService";
 import { settings } from "./settings";
 import { exhaustive } from "exhaustive";
 import { createProjectImplementation } from "./implementations/createProjectImplementation";
+import { listProjectsImplementation } from "./implementations/listProjectsImplementation";
 
 const main = async () => {
   const initializeAdministratorUsecase = new InitializeAdministratorUsecase(
@@ -32,6 +33,30 @@ const main = async () => {
       },
       ParseError: () => {
         console.error("Failed to parse events from the stream, possible data corruption.");
+      },
+      ApplyError: () => {
+        console.error("Error while replaying the events, possible data corruption.");
+      },
+      PasswordDoesNotIncludeLowercaseLetterError: () => {
+        console.error("The choosen password for the administrator does not include a lower case letter.");
+      },
+      PasswordDoesNotIncludeNumberError: () => {
+        console.error("The choosen password for the administrator does not include a number.");
+      },
+      PasswordDoesNotIncludeSymbolError: () => {
+        console.error("The choosen password for the administrator does not include a symbol.");
+      },
+      PasswordDoesNotIncludeUppercaseLetterError: () => {
+        console.error("The choosen password for the administrator does not include a upper case letter.");
+      },
+      PasswordTooShortError: () => {
+        console.error("The choosen password for the administrator should be greater than 7 characters.");
+      },
+      UnexpectedError: () => {
+        console.error("An unexpected error occurred, please try again.");
+      },
+      UsernameTooShortError: () => {
+        console.error("The choosen username for the administrator should be at least 3 characters long.");
       }
     });
     return;
@@ -48,7 +73,8 @@ const main = async () => {
     implementations: {
       listTasks: listTasksImplementation,
       login: loginImplementation,
-      createProject: createProjectImplementation
+      createProject: createProjectImplementation,
+      listProjects: listProjectsImplementation
     }
   });
 

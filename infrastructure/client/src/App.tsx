@@ -9,6 +9,7 @@ import { TasksCreatePage } from "./pages/TasksCreatePage";
 import { LoginPage } from "./pages/LoginPage";
 import { ProfilePage } from "./pages/ProfilePage";
 import { ProjectsCreatePage } from "./pages/ProjectsCreatePage";
+import { ProjectsPage } from "./pages/ProjectsPage";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route path="/tasks/create" element={<TasksCreatePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/projects" element={<ProjectsPage />} />
           <Route path="/projects/create" element={<ProjectsCreatePage />} />
         </Routes>
       </Box>
