@@ -5,6 +5,7 @@ import { UnexpectedError } from "@todo/domain/errors/UnexpectedError";
 import { PasswordService } from "../services/PasswordService";
 import { UserNotFoundError } from "@todo/domain/errors/UserNotFoundError";
 import { AuthenticationService } from "../services/AuthenticationService";
+import { LoginResponse } from "../responses/LoginResponse";
 
 export class LoginUsecase {
   public constructor(
@@ -53,7 +54,12 @@ export class LoginUsecase {
 
       const authenticationToken = await this.authenticationService.createAuthenticationToken(user.identifier);
 
-      return authenticationToken;
+      const response: LoginResponse = {
+        authenticationToken,
+        administrator: user.administrator
+      }
+
+      return response;
     } catch (error) {
       return new UnexpectedError(error instanceof Error ? error.message : String(error));
     } finally {
