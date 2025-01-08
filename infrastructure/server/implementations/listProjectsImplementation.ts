@@ -3,14 +3,16 @@ import { implementListProjectsRoute } from "@todo/core/routes/listProject";
 import { eventRepository } from "../repositories/eventRepository";
 import { eventParserService } from "../services/eventParserService";
 import { exhaustive } from "exhaustive";
+import { authenticationService } from "../services/authenticationService";
 
-export const listProjectsImplementation = implementListProjectsRoute(async () => {
+export const listProjectsImplementation = implementListProjectsRoute(async ({ authenticationToken }) => {
   const listProjectsUsecase = new ListProjectsUsecase(
     eventRepository,
-    eventParserService
+    eventParserService,
+    authenticationService,
   );
 
-  const projects = await listProjectsUsecase.execute();
+  const projects = await listProjectsUsecase.execute(authenticationToken);
 
   if (projects instanceof Error) {
     return exhaustive(projects.name, {
@@ -36,6 +38,12 @@ export const listProjectsImplementation = implementListProjectsRoute(async () =>
         return {
           success: false,
           error: "UNEXPECTED_ERROR"
+        } as const;
+      },
+      UnauthorizedError: () => {
+        return {
+          success: false,
+          error: "UNAUTHORIZED"
         } as const;
       }
     });
