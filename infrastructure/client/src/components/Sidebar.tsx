@@ -33,7 +33,7 @@ export const Sidebar = () => {
 
   return (
     <Drawer open={sidebarOpened} onClose={closeSidebar}>
-      <List>
+      <List sx={{ width: "300px" }}>
         <ListItem disablePadding disableGutters onClick={navigateTo("/")}>
           <ListItemButton>
             <ListItemIcon>
