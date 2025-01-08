@@ -71,4 +71,8 @@ export class ProjectAggregate implements Aggregate<ProjectEvent> {
       manager
     );
   }
+
+  public getAllProjects() {
+    return this.projects;
+  }
 }
