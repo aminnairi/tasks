@@ -2,6 +2,11 @@
 
 Self-hosted Open-Source Task Manager
 
+## Installation
+
+> [!WARN]
+> The project is under heavy development and is not ready yet for deployment.
+
 
 ### Requirements
 
