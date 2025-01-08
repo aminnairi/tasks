@@ -42,7 +42,7 @@ export class ListProjectsUsecase {
         return projectAggregate;
       }
 
-      const projects = projectAggregate.getAllProjects();
+      const projects = projectAggregate.getAllProjectsForManager(userIdentifier);
 
       const response: ProjectsResponse = projects.map(project => {
         return {

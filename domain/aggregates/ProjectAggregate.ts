@@ -72,7 +72,11 @@ export class ProjectAggregate implements Aggregate<ProjectEvent> {
     );
   }
 
-  public getAllProjects() {
-    return this.projects;
+  public getAllProjectsForManager(managerIdentifier: string) {
+    return this.projects.filter(project => {
+      return managerIdentifier === project.managerIdentifier;
+    });
+  }
+
   }
 }
