@@ -51,22 +51,6 @@ export const Sidebar = () => {
             <ListItemText primary="Home" />
           </ListItemButton>
         </ListItem>
-        <ListItem disablePadding disableGutters onClick={navigateTo("/projects")}>
-          <ListItemButton>
-            <ListItemIcon>
-              <AssignmentIcon />
-            </ListItemIcon>
-            <ListItemText primary="Projects" />
-          </ListItemButton>
-        </ListItem>
-        <ListItem disablePadding disableGutters onClick={navigateTo("/account")}>
-          <ListItemButton>
-            <ListItemIcon>
-              <PersonIcon />
-            </ListItemIcon>
-            <ListItemText primary="Account" />
-          </ListItemButton>
-        </ListItem>
         {!authenticated && (
           <>
             <Divider>
@@ -84,6 +68,39 @@ export const Sidebar = () => {
             </ListItem>
           </>
         )}
+        {authenticated && (
+          <>
+            <ListItem disablePadding disableGutters onClick={navigateTo("/projects")}>
+              <ListItemButton>
+                <ListItemIcon>
+                  <AssignmentIcon />
+                </ListItemIcon>
+                <ListItemText primary="Projects" />
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding disableGutters onClick={navigateTo("/account")}>
+              <ListItemButton>
+                <ListItemIcon>
+                  <PersonIcon />
+                </ListItemIcon>
+                <ListItemText primary="Account" />
+              </ListItemButton>
+            </ListItem>
+            <Divider>
+              <Typography sx={{ color: "grey" }}>
+                Authentication
+              </Typography>
+            </Divider>
+            <ListItem disablePadding disableGutters onClick={logout}>
+              <ListItemButton>
+                <ListItemIcon>
+                  <PersonIcon />
+                </ListItemIcon>
+                <ListItemText primary="Logout" />
+              </ListItemButton>
+            </ListItem>
+          </>
+        )}
         {isAdministrator && (
           <>
             <Divider>
@@ -97,23 +114,6 @@ export const Sidebar = () => {
                   <PersonIcon />
                 </ListItemIcon>
                 <ListItemText primary="Users" />
-              </ListItemButton>
-            </ListItem>
-          </>
-        )}
-        {authenticated && (
-          <>
-            <Divider>
-              <Typography sx={{ color: "grey" }}>
-                Authentication
-              </Typography>
-            </Divider>
-            <ListItem disablePadding disableGutters onClick={logout}>
-              <ListItemButton>
-                <ListItemIcon>
-                  <PersonIcon />
-                </ListItemIcon>
-                <ListItemText primary="Logout" />
               </ListItemButton>
             </ListItem>
           </>
