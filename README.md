@@ -15,26 +15,28 @@ Self-hosted Open-Source Task Manager
 - [NPM](https://npmjs.com)
 - [Git](https://git-scm.com/)
 
-## Clone
+### Clone
 
 ```bash
 git clone https://github.com/aminnairi/tasks
 cd tasks
 ```
 
-## Installation
+### Installation
+
+Install all workspaces dependencies.
 
 ```bash
 npm i
 ```
 
-## Server Startup
+### Server Startup
 
 ```bash
 npm -w @todo/server run dev
 ```
 
-## Client Startup
+### Client Startup
 
 ```bash
 npm -w @todo/client run dev
