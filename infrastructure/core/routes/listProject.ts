@@ -3,7 +3,9 @@ import { z } from "zod";
 
 export const [listProjectsRoute, implementListProjectsRoute] = createHttpRoute({
   input: value => {
-    const schema = z.null();
+    const schema = z.object({
+      authenticationToken: z.string()
+    });
 
     return schema.parse(value);
   },
