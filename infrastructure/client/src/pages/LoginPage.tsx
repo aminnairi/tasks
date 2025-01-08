@@ -8,12 +8,14 @@ import { CancelError } from "@renkei/core";
 import { exhaustive } from "exhaustive";
 import { authenticationTokenSignal } from "../signals/authenticationTokenSignal";
 import { useNavigate } from "react-router";
+import { useNotification } from "../hooks/notification";
 
 export const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
+  const { openNotification } = useNotification();
   const navigate = useNavigate();
 
   const onUsernameChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
@@ -66,14 +68,18 @@ export const LoginPage = () => {
 
       authenticationTokenSignal.emit(response.authenticationToken);
 
-      // TODO: notification in case of success login
+      openNotification({
+        duration: 5000,
+        message: "Successfully logged in",
+        severity: "success",
+      });
 
       navigate("/profile");
     }).catch((error) => {
       console.error(error);
       setError("Unexpected error, please try again later.");
     })
-  }, [username, password]);
+  }, [username, password, openNotification, navigate]);
 
   return (
     <Stack spacing={3}>
