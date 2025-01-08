@@ -11,6 +11,7 @@ import { Sidebar } from "./components/Sidebar";
 import { Header } from "./components/Header";
 import { NotFoundPage } from "./pages/NotFoundPage";
 import { Notification } from "./components/Notification";
+import { ProjectDetailsPage } from "./pages/ProjectDetailsPage";
 
 function App() {
   return (
@@ -26,7 +27,7 @@ function App() {
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/projects" element={<ProjectsPage />} />
           <Route path="/projects/create" element={<ProjectsCreatePage />} />
-          <Route path="/projects/create" element={<ProjectsCreatePage />} />
+          <Route path="/projects/:project" element={<ProjectDetailsPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Box>
