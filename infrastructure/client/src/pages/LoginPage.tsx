@@ -29,8 +29,6 @@ export const LoginPage = () => {
   const onLoginFormSubmit = useCallback((event: FormEvent) => {
     event.preventDefault();
 
-    console.log("Login submitted");
-
     client.login({
       input: {
         username,
