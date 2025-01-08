@@ -1,4 +1,5 @@
 import { AuthenticationService } from "@todo/application/services/AuthenticationService";
+import { UnauthorizedError } from "@todo/domain/errors/UnauthorizedError";
 import jsonwebtoken from "jsonwebtoken";
 import { z } from "zod";
 
@@ -15,15 +16,19 @@ export class JsonWebTokenAuthenticationService implements AuthenticationService 
     return authenticationToken;
   }
 
-  public async verifyAuthenticationToken(authenticationToken: string): Promise<string | false> {
-    const decodedAuthenticationToken = jsonwebtoken.verify(authenticationToken, this.secret);
+  public async verifyAuthenticationToken(authenticationToken: string): Promise<string | UnauthorizedError> {
+    try {
+      const decodedAuthenticationToken = jsonwebtoken.verify(authenticationToken, this.secret);
 
-    const schema = z.object({
-      userIdentifier: z.string()
-    });
+      const schema = z.object({
+        userIdentifier: z.string()
+      });
 
-    const payload = schema.parse(decodedAuthenticationToken);
+      const payload = schema.parse(decodedAuthenticationToken);
 
-    return payload.userIdentifier;
+      return payload.userIdentifier;
+    } catch {
+      return new UnauthorizedError();
+    }
   }
 }
