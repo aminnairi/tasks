@@ -7,6 +7,7 @@ Self-hosted Open-Source Task Manager
 > [!WARN]
 > The project is under heavy development and is not ready yet for deployment.
 
+## Development
 
 ### Requirements
 
