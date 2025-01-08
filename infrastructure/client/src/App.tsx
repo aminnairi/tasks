@@ -9,6 +9,7 @@ import { ProjectsCreatePage } from "./pages/ProjectsCreatePage";
 import { ProjectsPage } from "./pages/ProjectsPage";
 import { Sidebar } from "./components/Sidebar";
 import { Header } from "./components/Header";
+import { NotFoundPage } from "./pages/NotFoundPage";
 import { Notification } from "./components/Notification";
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/projects" element={<ProjectsPage />} />
           <Route path="/projects/create" element={<ProjectsCreatePage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Box>
     </Container>
