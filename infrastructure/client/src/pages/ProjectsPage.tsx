@@ -54,6 +54,9 @@ export const ProjectsPage = () => {
         },
         UNEXPECTED_ERROR: () => {
           setError("An unexpected error occurred, please try again later or contact an administrator.");
+        },
+        UNAUTHORIZED: () => {
+          setError("Please, signin first before listing your projects.");
         }
       });
     }).catch(error => {
