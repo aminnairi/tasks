@@ -12,18 +12,23 @@ import { client } from "../renkei";
 import { CancelError } from "@renkei/core";
 import { exhaustive } from "exhaustive";
 import { ProjectsResponse } from "@todo/application/responses/ProjectsResponse";
+import { useSignal } from "@aminnairi/react-signal";
+import { authenticationTokenSignal } from "../signals/authenticationTokenSignal";
 
 export const ProjectsPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [projects, setProjects] = useState<ProjectsResponse>([]);
+  const authenticationToken = useSignal(authenticationTokenSignal);
 
   useEffect(() => {
     setError("");
     setLoading(true);
 
     client.listProjects({
-      input: null
+      input: {
+        authenticationToken
+      }
     }).then(response => {
       if (response instanceof Error) {
         if (response instanceof CancelError) {
@@ -57,7 +62,7 @@ export const ProjectsPage = () => {
     }).finally(() => {
       setLoading(false);
     });
-  }, []);
+  }, [authenticationToken]);
 
   return (
     <Stack spacing={3}>
