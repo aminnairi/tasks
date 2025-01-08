@@ -15,6 +15,7 @@ export const [loginRoute, implementLoginRoute] = createHttpRoute({
       z.object({
         success: z.literal(true),
         authenticationToken: z.string(),
+        administrator: z.boolean(),
       }),
       z.object({
         success: z.literal(false),
