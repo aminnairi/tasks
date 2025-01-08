@@ -1,11 +1,13 @@
 # tasks
 
-## Requirements
 Self-hosted Open-Source Task Manager
 
-- Node
-- NPM
-- Git
+
+### Requirements
+
+- [Node](https://nodejs.org)
+- [NPM](https://npmjs.com)
+- [Git](https://git-scm.com/)
 
 ## Clone
 
