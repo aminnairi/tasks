@@ -32,6 +32,10 @@ export const [listProjectsRoute, implementListProjectsRoute] = createHttpRoute({
         success: z.literal(false),
         error: z.literal("STREAM_FETCH_ERROR"),
       }),
+      z.object({
+        success: z.literal(false),
+        error: z.literal("UNAUTHORIZED"),
+      }),
     ]);
 
     return schema.parse(value);
