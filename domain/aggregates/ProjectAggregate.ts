@@ -4,7 +4,6 @@ import { ApplyError } from "../errors/ApplyError";
 import { ProjectNameAlreadyTakenError } from "../errors/ProjectNameAlreadyTakenError";
 import { ProjectNameTooShortError } from "../errors/ProjectNameTooShortError";
 import { ProjectNotFoundError } from "../errors/ProjectNotFoundError";
-import { ProjectCreatedEvent } from "../events/projects/ProjectCreatedEvent";
 import { ProjectEvent } from "../events/projects/ProjectEvent";
 import { Aggregate } from "./Aggregate";
 
