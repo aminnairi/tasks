@@ -3,18 +3,26 @@ import { EventRepository } from "../repositories/EventRepository";
 import { EventParserService } from "../services/EventParserService";
 import { UnexpectedError } from "@todo/domain/errors/UnexpectedError";
 import { ProjectsResponse } from "../responses/ProjectsResponse";
+import { AuthenticationService } from "../services/AuthenticationService";
 
 export class ListProjectsUsecase {
   public constructor(
     private readonly eventRepository: EventRepository,
     private readonly eventParserService: EventParserService,
+    private readonly authenticationService: AuthenticationService,
   ) { }
 
-  public async execute() {
+  public async execute(authenticationToken: string) {
     const eventLock = this.eventRepository.createEventLock();
 
     try {
       await eventLock.lock();
+
+      const userIdentifier = await this.authenticationService.verifyAuthenticationToken(authenticationToken);
+
+      if (userIdentifier instanceof Error) {
+        return userIdentifier;
+      }
 
       const unparsedProjectEvents = await this.eventRepository.fetchFromStream("project-");
 
@@ -45,6 +53,7 @@ export class ListProjectsUsecase {
 
       return response;
     } catch (error) {
+      console.error(error);
       return new UnexpectedError(error instanceof Error ? error.message : String(error));
     } finally {
       eventLock.unlock();
