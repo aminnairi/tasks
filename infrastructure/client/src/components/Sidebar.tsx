@@ -13,10 +13,12 @@ import { useSignal } from "@aminnairi/react-signal";
 import { sidebarOpenedSignal } from "../signals/sidebarOpenedSignal";
 import { useCallback, useMemo } from "react";
 import { useNavigate } from "react-router";
+import { isAdministratorSignal } from "../signals/isAdministratorSignal";
 import { authenticationTokenSignal } from "../signals/authenticationTokenSignal";
 
 export const Sidebar = () => {
   const sidebarOpened = useSignal(sidebarOpenedSignal);
+  const isAdministrator = useSignal(isAdministratorSignal);
   const authenticationToken = useSignal(authenticationTokenSignal);
   const authenticated = useMemo(() => !!authenticationToken, [authenticationToken]);
 
@@ -71,6 +73,23 @@ export const Sidebar = () => {
                   <PersonIcon />
                 </ListItemIcon>
                 <ListItemText primary="Login" />
+              </ListItemButton>
+            </ListItem>
+          </>
+        )}
+        {isAdministrator && (
+          <>
+            <Divider>
+              <Typography sx={{ color: "grey" }}>
+                Administration
+              </Typography>
+            </Divider>
+            <ListItem disablePadding disableGutters onClick={navigateTo("/administration/users")}>
+              <ListItemButton>
+                <ListItemIcon>
+                  <PersonIcon />
+                </ListItemIcon>
+                <ListItemText primary="Users" />
               </ListItemButton>
             </ListItem>
           </>
