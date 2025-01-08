@@ -74,7 +74,7 @@ export const LoginPage = () => {
         severity: "success",
       });
 
-      navigate("/profile");
+      navigate("/account");
     }).catch((error) => {
       console.error(error);
       setError("Unexpected error, please try again later.");
