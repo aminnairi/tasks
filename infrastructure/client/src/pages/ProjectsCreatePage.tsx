@@ -9,12 +9,14 @@ import { useSignal } from "@aminnairi/react-signal";
 import { authenticationTokenSignal } from "../signals/authenticationTokenSignal";
 import { exhaustive } from "exhaustive";
 import { CancelError } from "@renkei/core";
+import { useNotification } from "../hooks/notification";
 
 export const ProjectsCreatePage = () => {
   const [name, setName] = useState("");
   const [error, setError] = useState("");
 
   const authenticationToken = useSignal(authenticationTokenSignal);
+  const { openNotification } = useNotification();
 
   const onNameChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
@@ -41,7 +43,12 @@ export const ProjectsCreatePage = () => {
 
       if (response.success) {
         // TODO: redirect to project management page
-        // TODO: success notification
+
+        openNotification({
+          duration: 5000,
+          message: "Project created successfully",
+          severity: "success",
+        });
         return;
       }
 
