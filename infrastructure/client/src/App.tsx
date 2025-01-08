@@ -7,11 +7,13 @@ import { LoginPage } from "./pages/LoginPage";
 import { ProfilePage } from "./pages/ProfilePage";
 import { ProjectsCreatePage } from "./pages/ProjectsCreatePage";
 import { ProjectsPage } from "./pages/ProjectsPage";
+import { Sidebar } from "./components/Sidebar";
 import { Header } from "./components/Header";
 
 function App() {
   return (
     <Container>
+      <Sidebar />
       <Header />
       <Box paddingTop="100px">
         <Routes>
