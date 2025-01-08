@@ -3,6 +3,7 @@ import { UserEntity } from "../entities/UserEntity";
 import { ApplyError } from "../errors/ApplyError";
 import { ProjectNameAlreadyTakenError } from "../errors/ProjectNameAlreadyTakenError";
 import { ProjectNameTooShortError } from "../errors/ProjectNameTooShortError";
+import { ProjectNotFoundError } from "../errors/ProjectNotFoundError";
 import { ProjectCreatedEvent } from "../events/projects/ProjectCreatedEvent";
 import { ProjectEvent } from "../events/projects/ProjectEvent";
 import { Aggregate } from "./Aggregate";
@@ -78,5 +79,19 @@ export class ProjectAggregate implements Aggregate<ProjectEvent> {
     });
   }
 
+  public getProjectFromManager(managerIdentifier: string, projectIdentifier: string) {
+    const managerProjects = this.projects.filter(project => {
+      return project.managerIdentifier === managerIdentifier;
+    });
+
+    const project = managerProjects.find(project => {
+      return project.identifier === projectIdentifier;
+    });
+
+    if (!project) {
+      return new ProjectNotFoundError();
+    }
+
+    return project;
   }
 }
